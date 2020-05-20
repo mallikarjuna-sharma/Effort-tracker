@@ -1,0 +1,58 @@
+{
+    "username":"superuser",
+    "password":"12345",
+    "email":"kedar96@gmail.com",
+    "application":"HPELD",
+    "name":"null",
+    "id":"12345",
+    "useEffort":[
+        {
+            "id":"1",
+            "date":"2020-05-20",
+            "effort":3.0,
+            "description":"kedar desc",
+            "activityType":"new mallik",
+            "serviceElement":"service",
+            "assyst":"assystsms",
+            "username":"mallik"
+        }, {
+            "id":"2",
+            "date":"2020-05-20",
+            "effort":3.0,
+            "description":"kedar desc",
+            "activityType":"new mallik",
+            "serviceElement":"service",
+            "assyst":"assystsms",
+            "username":"mallik"
+        }, {
+            "id":"3",
+            "date":"2020-05-20",
+            "effort":3.0,
+            "description":"kedar desc",
+            "activityType":"new mallik",
+            "serviceElement":"service",
+            "assyst":"assystsms",
+            "username":"mallik"
+        }, {
+            "id":"4",
+            "date":"2020-05-20",
+            "effort":3.0,
+            "description":"kedar desc",
+            "activityType":"new mallik",
+            "serviceElement":"service",
+            "assyst":"assystsms",
+            "username":"mallik"
+        }, {
+            "id":"5",
+            "date":"2020-05-20",
+            "effort":3.0,
+            "description":"kedar desc",
+            "activityType":"new mallik",
+            "serviceElement":"service",
+            "assyst":"assystsms",
+            "username":"mallik"
+        }
+
+    ]
+}
+

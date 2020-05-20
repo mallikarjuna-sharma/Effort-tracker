@@ -1,2 +1,2 @@
-# Effort-tracker
-log and track your work effort for operations with users and admin logins
+# restaurants-table-reservation-system
+Complete Full stack application to automate bookings for a restaurants
