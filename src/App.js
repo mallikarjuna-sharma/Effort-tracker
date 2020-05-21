@@ -19,11 +19,6 @@ const axios = require("axios");
 
 function App() {
 
-  const [serviceURL, setserviceURL] = useState("localhost:5000");
-
-
-
-  const [bookNow, setBookNow] = useState(false);
 
   const [openErrorPopUp, setopenErrorPopUp] = useState(false);
 
@@ -31,12 +26,8 @@ function App() {
 
   const [tableData, setTableData] = useState([]);
 
-
-
   const [selectedEndTime, setSelectedEndTime] = React.useState("");
   const [registrationForDate, setRegistrationForDate] = React.useState([]);
-
-
 
   const [userBooking, setUserBooking] = useState([]);
 
@@ -48,6 +39,9 @@ function App() {
 
   const [userEffort, setUserEffort] = useState([]);
 
+  const [masterEffort, setMasterEffort] = useState([]);
+
+
   const [editRowId, setEditRowId] = useState(false);
 
   const [open, setOpen] = useState(false);
@@ -55,54 +49,34 @@ function App() {
   const [selectedDate, setSelectedDate] = React.useState("");
 
   const [userName, setUserName] = useState("");
+
   const [userPassword, setUserPassword] = useState("");
 
-  const getTablesThatCanBeBooked = (slotArray) => {
-    // console.log(slotArray, "result");
-
-    let result = [];
-
-    let resultLength = [];
-
-    let tempArr = [];
-    let success = true;
-
-    for (let i = 1; i < 6; i++) {
-      tempArr = [];
-      success = true;
-
-      if (registrationForDate[i]) {
-        registrationForDate[i].forEach((e) => {
-          tempArr.push(...e);
-        });
-
-        slotArray.forEach((e) => {
-          if (tempArr.indexOf(e) > -1) {
-            success = false;
-            return;
-          }
-        });
-
-        if (success) {
-          result.push(i);
-          resultLength.push(tempArr.length);
-        }
-      } else {
-        if (success) {
-          result.push(i);
-          resultLength.push(tempArr.length);
-        }
-      }
-    }
-
-    console.log(result, "result");
-    console.log(resultLength, "result");
-
-    return [result, resultLength];
-  };
 
 
-  useEffect( () => console.log(selectedDate,'selectedDate'),[selectedDate])
+  useEffect( () => {
+
+    console.log(selectedDate,'selectedDate',masterEffort)
+
+    let filterDate = []
+
+    if(masterEffort && masterEffort.length )
+       filterDate =  masterEffort.slice().filter(values =>  values.date == selectedDate )
+
+
+       console.log(filterDate,'filterDate')
+    
+
+    setUserEffort(filterDate.slice());
+
+  },[selectedDate])
+
+
+  useEffect( () => {
+    
+    console.log(selectedDate,'selectedDate')
+
+  },[userEffort])
 
   
 
@@ -136,14 +110,7 @@ function App() {
 
   return (
     <Grid container justify="center" spacing={4}>
-      {OpenConfirmPopup && (
-        <ConfirmPopUp
-          setOpenConfirmPopup={(e) => {
-            if (e) setBookNow(true);
-            setOpenConfirmPopup(false);
-          }}
-        />
-      )}
+      
 
       <Grid item>
         <Typography
@@ -164,7 +131,7 @@ function App() {
         </Typography>
       </Grid>
 
-      <Register setUserEffort={(e) => setUserEffort(e)} setUserNamePassword= {e => { setUserName(e[0]); setUserPassword(e[1]) } }/>
+      <Register setMasterEffort = {(e) => setMasterEffort(e) } setUserEffort={(e) => setUserEffort(e)} setUserNamePassword= {e => { setUserName(e[0]); setUserPassword(e[1]) } }/>
 
       <DateTimePicker
         setSelectedDate={(e) => setSelectedDate(e)}
@@ -286,41 +253,7 @@ const DialogActions = withStyles((theme) => ({
 
 
 
-const ConfirmPopUp = (props) => {
-  const { setOpenConfirmPopup } = props;
 
-  return (
-    <Dialog onClose={() => setOpenConfirmPopup(false)} open={1}>
-      <DialogTitle
-        id="customized-dialog-title"
-        onClose={() => setOpenConfirmPopup(false)}
-        style={{
-          background: "linear-gradient(45deg, #93CFC2 30%, #136F7E 90%)",
-        }}
-      >
-        Can I Book ?
-      </DialogTitle>
-
-      <DialogActions>
-        <StyledButtonBlue
-          onClick={(e) => {
-            setOpenConfirmPopup(true);
-          }}
-        >
-          Confirm
-        </StyledButtonBlue>
-
-        <StyledButtonBlue
-          onClick={(e) => {
-            setOpenConfirmPopup(false);
-          }}
-        >
-          No !
-        </StyledButtonBlue>
-      </DialogActions>
-    </Dialog>
-  );
-};
 
 const useStylesSnack = makeStyles((theme) => ({
   rootsnack: {

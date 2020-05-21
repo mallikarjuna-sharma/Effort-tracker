@@ -21,9 +21,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 
-
-
-
 const useStylesselect = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -75,7 +72,13 @@ const DialogActions = withStyles((theme) => ({
 function UpdateRecordPopup(props) {
   const classesSelect = useStylesselect();
 
-  const { editRowId: fieldValues, open, setOpen, setEditRowId , handleAddUpdate} = props;
+  const {
+    editRowId: fieldValues,
+    open,
+    setOpen,
+    setEditRowId,
+    handleAddUpdate,
+  } = props;
 
   const [effortId, seteffortId] = React.useState(
     fieldValues ? fieldValues["id"] : ""
@@ -99,6 +102,7 @@ function UpdateRecordPopup(props) {
 
   const [errorfield, seterrorfield] = React.useState(-1);
 
+  const [showConfirmMsg, setShowConfirmMsg] = React.useState(0);
 
   React.useEffect(() => {
     setOpen(true);
@@ -170,13 +174,11 @@ function UpdateRecordPopup(props) {
     }
   };
 
-
   const handleFieldValidation = () => {
     if (!effort) seterrorfield(0);
     else if (!description || description.length < 4) seterrorfield(1);
   };
 
- 
   return (
     <div>
       <Dialog
@@ -205,7 +207,7 @@ function UpdateRecordPopup(props) {
                 type={object.type}
                 error={index === errorfield ? true : 0}
                 helperText={index === errorfield ? getErrorMsg() : ""}
-                required= {object.id==='assyst' ? false : true}
+                required={object.id === "assyst" ? false : true}
                 label={object.label}
                 color="primary"
                 onChange={(e) =>
@@ -227,17 +229,16 @@ function UpdateRecordPopup(props) {
                   id: "age-native-required",
                 }}
               >
-                {
-                stringConstants.SERVICE_ELEMENT.map(obj => 
-                     <option value={obj.id}>{obj.label}</option>
-                )}
+                {stringConstants.SERVICE_ELEMENT.map((obj) => (
+                  <option value={obj.id}>{obj.label}</option>
+                ))}
               </Select>
               <FormHelperText>Required</FormHelperText>
             </FormControl>
 
             <FormControl required className={classesSelect.formControl}>
               <InputLabel htmlFor="age-native-required">
-                Activity  Type 
+                Activity Type 
               </InputLabel>
               <Select
                 native
@@ -248,10 +249,9 @@ function UpdateRecordPopup(props) {
                   id: "age-native-required",
                 }}
               >
-               {
-                stringConstants.ACTIVITYTYPE.map(obj => 
-                     <option value={obj.id}>{obj.label}</option>
-                )}
+                {stringConstants.ACTIVITYTYPE.map((obj) => (
+                  <option value={obj.id}>{obj.label}</option>
+                ))}
               </Select>
               <FormHelperText>Required</FormHelperText>
             </FormControl>
@@ -259,39 +259,47 @@ function UpdateRecordPopup(props) {
         </DialogContent>
         <DialogActions>
           <Grid container>
-            <Grid
-              item
-              md={fieldValues ? 6 : 12}
-              lg={fieldValues ? 6 : 12}
-              sm={6}
-              xs={6}
-            >
-
-
+            <Grid item md={6} lg={6} sm={6} xs={6}>
               <StyledButton
                 onClick={() => {
-
-                  if(effort && description && activityType && serviceElement )
-                       handleAddUpdate(effort,description,activityType,serviceElement,assyst , effortId   );
-                  else
-                      handleFieldValidation()
+                  if (effort && description && activityType && serviceElement) {
+                    if (!showConfirmMsg) setShowConfirmMsg(1);
+                    else {
+                      setShowConfirmMsg(0);
+                      handleAddUpdate(
+                        effort,
+                        description,
+                        activityType,
+                        serviceElement,
+                        assyst,
+                        effortId
+                      );
+                    }
+                  } else {
+                    setShowConfirmMsg(0);
+                    handleFieldValidation();
+                  }
                 }}
                 color="primary"
               >
-                {fieldValues ? "Update" : "Add"}
+                {!showConfirmMsg
+                  ? fieldValues
+                    ? "Update"
+                    : "Add"
+                  : "Confirm Save"}
               </StyledButton>
             </Grid>
 
-            {fieldValues && (
+            {(fieldValues || showConfirmMsg) && (
               <Grid item md={6} lg={6} sm={6} xs={6}>
                 <Grid container justify="flex-end" alignContent="center">
                   <StyledButton
                     color="primary"
                     onClick={(e) => {
-                
+                      if (showConfirmMsg) setShowConfirmMsg(0);
                     }}
                   >
-                    Delete
+                    {!showConfirmMsg ? "Delete" : "Cancel"}
                   </StyledButton>
                 </Grid>
               </Grid>

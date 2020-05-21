@@ -67,7 +67,7 @@ function Register(props) {
 
   const [gmail, setgmail] = React.useState(" ");
 
-  const { setUserEffort,setUserNamePassword } = props;
+  const { setUserEffort,setUserNamePassword,setMasterEffort } = props;
 
   const classes = useStyles();
 
@@ -130,7 +130,7 @@ function Register(props) {
         loginUser().then((res) => {
           console.log(res, "res");
 
-          if (res) setUserEffort(res.useEffort);
+          if (res) {setUserEffort(res.useEffort);setMasterEffort(res.useEffort);}
 
           setUserNamePassword([TcsId,password])
 
@@ -264,7 +264,7 @@ function Register(props) {
           </DialogTitle>
 
           <DialogContent dividers>
-            <form classTcsId={classes.rootregister}>
+            <form className={classes.rootregister}>
               {!pageNumber
                 ? stringConstants.REGISTERFIELDS.map((ind, index) => (
                     <TextField
