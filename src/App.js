@@ -105,7 +105,11 @@ function App() {
 
   }
 
-  
+  const handleDelete = (eid) => {
+
+    console.log(eid,'eid')
+
+  }
 
 
   return (
@@ -122,7 +126,7 @@ function App() {
             WebkitTextFillColor: "transparent",
           }}
         >
-          Hello ,
+         
           {userName
             ? userName
             : tableData && tableData.length
@@ -152,6 +156,7 @@ function App() {
 
       {(editRowId || open) && (
         <UpdateRecordPopup
+          handleDelete = {e => handleDelete(e) }
           editRowId={editRowId}
           open={open}
           handleAddUpdate={(effort,description,activityType,serviceElement,assyst,Eid) => 

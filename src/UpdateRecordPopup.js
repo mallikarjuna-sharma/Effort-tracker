@@ -78,6 +78,7 @@ function UpdateRecordPopup(props) {
     setOpen,
     setEditRowId,
     handleAddUpdate,
+    handleDelete
   } = props;
 
   const [effortId, seteffortId] = React.useState(
@@ -103,6 +104,9 @@ function UpdateRecordPopup(props) {
   const [errorfield, seterrorfield] = React.useState(-1);
 
   const [showConfirmMsg, setShowConfirmMsg] = React.useState(0);
+
+  const [showConfirmDelete, setShowConfirmDelete] = React.useState(0);
+
 
   React.useEffect(() => {
     setOpen(true);
@@ -190,6 +194,10 @@ function UpdateRecordPopup(props) {
         open={open}
       >
         <DialogTitle
+        onClose={() => {
+          setOpen(false);
+          setEditRowId(false);
+        }}
           id="customized-dialog-title"
           style={{
             background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
@@ -204,7 +212,8 @@ function UpdateRecordPopup(props) {
               <TextField
                 key={index}
                 id={object.id}
-                type={object.type}
+                type={   object.type}
+                step={0.5}
                 error={index === errorfield ? true : 0}
                 helperText={index === errorfield ? getErrorMsg() : ""}
                 required={object.id === "assyst" ? false : true}
@@ -259,7 +268,7 @@ function UpdateRecordPopup(props) {
         </DialogContent>
         <DialogActions>
           <Grid container>
-            <Grid item md={6} lg={6} sm={6} xs={6}>
+            {!showConfirmDelete ? <Grid item md={6} lg={6} sm={6} xs={6}>
               <StyledButton
                 onClick={() => {
                   if (effort && description && activityType && serviceElement) {
@@ -288,22 +297,37 @@ function UpdateRecordPopup(props) {
                     : "Add"
                   : "Confirm Save"}
               </StyledButton>
-            </Grid>
+            </Grid> : null }
+            
 
-            {(fieldValues || showConfirmMsg) && (
+           { (showConfirmDelete) ? <Grid item md={6} lg={6} sm={6} xs={6}>
+              <StyledButton
+                onClick={() => {
+                  setShowConfirmDelete(0);
+                  handleDelete(effortId);
+                }}
+                color="primary"
+              >
+                { "Confirm Delete"}
+              </StyledButton>
+            </Grid> :null}
+
+            {(fieldValues || showConfirmMsg) ? (
               <Grid item md={6} lg={6} sm={6} xs={6}>
                 <Grid container justify="flex-end" alignContent="center">
                   <StyledButton
                     color="primary"
                     onClick={(e) => {
-                      if (showConfirmMsg) setShowConfirmMsg(0);
+                      if (showConfirmMsg) {setShowConfirmMsg(0);setShowConfirmDelete(0);}
+                      else if (showConfirmDelete) {setShowConfirmDelete(0);}
+                      else if(!showConfirmDelete)  setShowConfirmDelete(1)
                     }}
                   >
-                    {!showConfirmMsg ? "Delete" : "Cancel"}
+                    {(!showConfirmMsg && !showConfirmDelete) ? "Delete" : "Cancel"}
                   </StyledButton>
                 </Grid>
               </Grid>
-            )}
+            ):null}
           </Grid>
         </DialogActions>
       </Dialog>
