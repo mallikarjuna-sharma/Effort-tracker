@@ -12,7 +12,7 @@ import stringConstants from "./stringConstants.jsx";
 
 import useStyles from "./styles.jsx";
 
-import { loginUser } from "./service.js";
+import { loginUser ,registerUser} from "./service.js";
 
 const styles = (theme) => ({
   root: {
@@ -55,17 +55,14 @@ const DialogActions = withStyles((theme) => ({
 function Register(props) {
   const [open, setOpen] = React.useState(true);
   const [TcsId, setTcsId] = React.useState(" ");
-  const [phone, setphone] = React.useState(" ");
+  const [name, setName] = React.useState(" ");
   const [password, setpassword] = React.useState(" ");
   const [confirmpassword, setconfirmpassword] = React.useState(" ");
 
-  const [company, setcompany] = React.useState(" ");
-  const [address, setaddress] = React.useState(" ");
+  const [application, setapplication] = React.useState(" ");
   const [errorfield, seterrorfield] = React.useState(-1);
 
   const [pageNumber, setPageNumber] = React.useState(1);
-
-  const [gmail, setgmail] = React.useState(" ");
 
   const { setUserEffort,setUserNamePassword,setMasterEffort } = props;
 
@@ -77,12 +74,13 @@ function Register(props) {
         setTcsId(val);
         break;
       }
-      case "Phone": {
-        setphone(val);
+      case "Name": {
+        console.log(type,'type')
+        setName(val);
         break;
       }
       case "Gmail": {
-        setgmail(val);
+        setTcsId(val);
         break;
       }
       case "password": {
@@ -93,12 +91,8 @@ function Register(props) {
         setconfirmpassword(val);
         break;
       }
-      case "Company TcsId": {
-        setcompany(val);
-        break;
-      }
-      case "ADDRESS": {
-        setaddress(val);
+      case "application": {
+        setapplication(val);
         break;
       }
       default:
@@ -128,15 +122,11 @@ function Register(props) {
       else if (!password || password.length < 4) seterrorfield(1);
       else {
         loginUser().then((res) => {
-          console.log(res, "res");
+          console.log(res, "res loginUser");
 
           if (res) {setUserEffort(res.useEffort);setMasterEffort(res.useEffort);}
-
           setUserNamePassword([TcsId,password])
-
           setOpen(false);
-
-
         });
       }
     }
@@ -145,39 +135,47 @@ function Register(props) {
   const handleRegister = (type) => {
     if (pageNumber) setPageNumber(0);
 
+    console.log(TcsId);
+    console.log(password);
+
+    console.log(name);
+
+    console.log(application);
+
     if (!TcsId || TcsId.length < 4) seterrorfield(0);
-    else if (!phone || phone.length < 4) seterrorfield(1);
-    else if (!gmail || gmail.length < 4) seterrorfield(4);
-    else if (!company || company.length < 4) seterrorfield(5);
-    else if (!address || address.length < 4) seterrorfield(6);
-    else if (TcsId && phone && type == "register") {
-      // let getRegister = props.registered;
-      // var error = false;
-      // getRegister.forEach(e => {
-      //     if (e.gmail === gmail || e.phone === phone) {
-      //         if (e.gmail === gmail) seterrorfield(4)
-      //         else if (e.phone === phone) seterrorfield(1)
-      //         error = true;
-      //         return;
-      //     }
-      // })
-      // if (!error) {
-      //     let arr = {
-      //         'phone': phone,
-      //         'TcsId': TcsId,
-      //         'password': password,
-      //         'gmail': gmail,
-      //         'company': company,
-      //         'address': address
-      //     };
-      //     getRegister.push(arr);
-      //     props.setRegister(getRegister)
-      //     let a = [];
-      //     a.push(arr)
-      //     props.isLoggedIn(a)
-      // }
+    else if (!name || name.length < 4) seterrorfield(1);
+    else if (!password || password.length < 4) seterrorfield(2);
+    else if (!application || application.length < 4) seterrorfield(4);
+    else if (TcsId && password) {
+
+      console.log(TcsId);
+      console.log(password);
+
+      console.log(TcsId);
+
+      console.log(application);
+
+      // console.log(application);
+
+
+
+      let userDetails = {
+        username:TcsId,
+        password:password,
+        email:TcsId,
+        application:application
+      }
+
+      registerUser(userDetails).then((res) => {
+        console.log(res, "res registerUser");
+        if (res) {
+          setUserNamePassword([TcsId,password])
+          setOpen(false);
+        }
+      })
+
+
     }
-    // if (TcsId &&  password && (type == 'login')) {}
   };
 
   const StyledButton = withStyles({
@@ -202,7 +200,7 @@ function Register(props) {
           return TcsId;
         }
         case "1": {
-          return phone;
+          return name;
         }
         case "2": {
           return password;
@@ -211,13 +209,7 @@ function Register(props) {
           return confirmpassword;
         }
         case "4": {
-          return gmail;
-        }
-        case "5": {
-          return company;
-        }
-        case "5": {
-          return address;
+          return TcsId;
         }
       }
     else

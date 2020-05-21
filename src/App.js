@@ -15,6 +15,8 @@ import GenerateTableComponent from "./table.js";
 import Register from './Register.jsx'
 import UpdateRecordPopup from './UpdateRecordPopup.js'
 
+import {updateEffortDetails,logEffortDetails,deleteEffortDetails} from './service.js'
+
 const axios = require("axios");
 
 function App() {
@@ -95,9 +97,14 @@ function App() {
     }];
 
     console.log(effortDetails,'effortDetails',Eid);  
+
+    if(Eid)
+      logEffortDetails(effortDetails).then(res => alert("Log Succes") )
+    else
+    updateEffortDetails(Eid,effortDetails).then(res => alert("Update Succes") )
+
        
     }
-
 
 
 
@@ -108,6 +115,8 @@ function App() {
   const handleDelete = (eid) => {
 
     console.log(eid,'eid')
+
+    deleteEffortDetails(eid).then(res => alert("Delete Succes") )
 
   }
 
