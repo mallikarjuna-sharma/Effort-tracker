@@ -54,12 +54,17 @@ const DialogActions = withStyles((theme) => ({
 
 function Register(props) {
   const [open, setOpen] = React.useState(true);
+
   const [TcsId, setTcsId] = React.useState(" ");
   const [name, setName] = React.useState(" ");
   const [password, setpassword] = React.useState(" ");
   const [confirmpassword, setconfirmpassword] = React.useState(" ");
-
   const [application, setapplication] = React.useState(" ");
+  const [email, setemail] = React.useState(" ");
+
+
+
+
   const [errorfield, seterrorfield] = React.useState(-1);
 
   const [pageNumber, setPageNumber] = React.useState(1);
@@ -93,6 +98,10 @@ function Register(props) {
       }
       case "application": {
         setapplication(val);
+        break;
+      }
+      case "email": {
+        setemail(val);
         break;
       }
       default:
@@ -136,16 +145,23 @@ function Register(props) {
     if (pageNumber) setPageNumber(0);
 
     console.log(TcsId);
+
     console.log(password);
+    console.log(confirmpassword);
 
     console.log(name);
 
     console.log(application);
 
+    console.log(email);
+
+
     if (!TcsId || TcsId.length < 4) seterrorfield(0);
     else if (!name || name.length < 4) seterrorfield(1);
     else if (!password || password.length < 4) seterrorfield(2);
     else if (!application || application.length < 4) seterrorfield(4);
+    else if (!email || email.length < 4) seterrorfield(4);
+
     else if (TcsId && password) {
 
       console.log(TcsId);
@@ -162,8 +178,9 @@ function Register(props) {
       let userDetails = {
         username:TcsId,
         password:password,
-        email:TcsId,
-        application:application
+        name:name,
+        application:application,
+        email:email
       }
 
       registerUser(userDetails).then((res) => {
@@ -209,7 +226,10 @@ function Register(props) {
           return confirmpassword;
         }
         case "4": {
-          return TcsId;
+          return application;
+        }   
+        case "5": {
+          return email;
         }
       }
     else

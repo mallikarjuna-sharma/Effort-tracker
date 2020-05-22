@@ -53,6 +53,11 @@ const stringConstants = {
       label: "Application Name",
       type: "string",
     },
+    {
+      id: "email",
+      label: "Email",
+      type: "string",
+    },
   ],
 
   LOGINFIELDS: [
